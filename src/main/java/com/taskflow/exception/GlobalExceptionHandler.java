@@ -1,4 +1,4 @@
-package com.gui.taskflow.exception;
+package com.taskflow.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

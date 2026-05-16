@@ -1,9 +1,9 @@
-package com.gui.taskflow.controller;
+package com.taskflow.controller;
 
-import com.gui.taskflow.entity.PrioridadeTarefa;
-import com.gui.taskflow.entity.StatusTarefa;
-import com.gui.taskflow.entity.Tarefa;
-import com.gui.taskflow.repository.TarefaRepository;
+import com.taskflow.entity.PrioridadeTarefa;
+import com.taskflow.entity.StatusTarefa;
+import com.taskflow.entity.Tarefa;
+import com.taskflow.repository.TarefaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cache.CacheManager;

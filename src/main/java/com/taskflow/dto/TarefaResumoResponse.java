@@ -1,7 +1,7 @@
-package com.gui.taskflow.dto;
+package com.taskflow.dto;
 
-import com.gui.taskflow.entity.PrioridadeTarefa;
-import com.gui.taskflow.entity.StatusTarefa;
+import com.taskflow.entity.PrioridadeTarefa;
+import com.taskflow.entity.StatusTarefa;
 
 import java.time.LocalDateTime;
 

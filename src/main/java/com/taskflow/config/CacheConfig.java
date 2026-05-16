@@ -1,4 +1,4 @@
-package com.gui.taskflow.config;
+package com.taskflow.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;

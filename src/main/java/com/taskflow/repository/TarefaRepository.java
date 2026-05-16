@@ -1,9 +1,9 @@
-package com.gui.taskflow.repository;
+package com.taskflow.repository;
 
-import com.gui.taskflow.dto.TarefaResumoResponse;
-import com.gui.taskflow.entity.PrioridadeTarefa;
-import com.gui.taskflow.entity.StatusTarefa;
-import com.gui.taskflow.entity.Tarefa;
+import com.taskflow.dto.TarefaResumoResponse;
+import com.taskflow.entity.PrioridadeTarefa;
+import com.taskflow.entity.StatusTarefa;
+import com.taskflow.entity.Tarefa;
 import jakarta.persistence.QueryHint;
 import org.hibernate.jpa.HibernateHints;
 import org.springframework.data.domain.Page;
@@ -31,7 +31,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query(
             value = """
-                    select new com.gui.taskflow.dto.TarefaResumoResponse(
+                    select new com.taskflow.dto.TarefaResumoResponse(
                         t.id,
                         t.titulo,
                         t.status,

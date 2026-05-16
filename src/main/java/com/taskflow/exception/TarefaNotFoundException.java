@@ -1,4 +1,4 @@
-package com.gui.taskflow.exception;
+package com.taskflow.exception;
 
 public class TarefaNotFoundException extends RuntimeException {
 

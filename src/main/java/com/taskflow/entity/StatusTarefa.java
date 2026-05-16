@@ -1,4 +1,4 @@
-package com.gui.taskflow.entity;
+package com.taskflow.entity;
 
 public enum StatusTarefa {
     PENDENTE,

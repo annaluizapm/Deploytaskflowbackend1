@@ -1,10 +1,10 @@
-package com.gui.taskflow.controller;
+package com.taskflow.controller;
 
-import com.gui.taskflow.dto.TarefaResumoResponse;
-import com.gui.taskflow.entity.PrioridadeTarefa;
-import com.gui.taskflow.entity.StatusTarefa;
-import com.gui.taskflow.entity.Tarefa;
-import com.gui.taskflow.service.TarefaService;
+import com.taskflow.dto.TarefaResumoResponse;
+import com.taskflow.entity.PrioridadeTarefa;
+import com.taskflow.entity.StatusTarefa;
+import com.taskflow.entity.Tarefa;
+import com.taskflow.service.TarefaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

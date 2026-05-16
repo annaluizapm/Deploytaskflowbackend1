@@ -1,11 +1,11 @@
-package com.gui.taskflow.service;
+package com.taskflow.service;
 
-import com.gui.taskflow.dto.TarefaResumoResponse;
-import com.gui.taskflow.entity.PrioridadeTarefa;
-import com.gui.taskflow.entity.StatusTarefa;
-import com.gui.taskflow.entity.Tarefa;
-import com.gui.taskflow.exception.TarefaNotFoundException;
-import com.gui.taskflow.repository.TarefaRepository;
+import com.taskflow.dto.TarefaResumoResponse;
+import com.taskflow.entity.PrioridadeTarefa;
+import com.taskflow.entity.StatusTarefa;
+import com.taskflow.entity.Tarefa;
+import com.taskflow.exception.TarefaNotFoundException;
+import com.taskflow.repository.TarefaRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
