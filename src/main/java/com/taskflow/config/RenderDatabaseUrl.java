@@ -10,11 +10,11 @@ public final class RenderDatabaseUrl {
     }
 
     public static void applyIfPresent() {
-        if (hasText(System.getenv("SPRING_DATASOURCE_URL"))) {
-            return;
-        }
-
-        String databaseUrl = firstPresent(System.getenv("DATABASE_URL"), System.getenv("POSTGRES_URL"));
+        String databaseUrl = firstPresent(
+                System.getenv("SPRING_DATASOURCE_URL"),
+                System.getenv("DATABASE_URL"),
+                System.getenv("POSTGRES_URL")
+        );
         if (!hasText(databaseUrl)) {
             return;
         }
@@ -51,8 +51,14 @@ public final class RenderDatabaseUrl {
         return uri.getPort() > 0 ? uri.getPort() : 5432;
     }
 
-    private static String firstPresent(String first, String second) {
-        return hasText(first) ? first : second;
+    private static String firstPresent(String... values) {
+        for (String value : values) {
+            if (hasText(value)) {
+                return value;
+            }
+        }
+
+        return null;
     }
 
     private static boolean hasText(String value) {
