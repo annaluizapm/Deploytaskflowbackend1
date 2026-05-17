@@ -10,24 +10,43 @@ public final class RenderDatabaseUrl {
     }
 
     public static void applyIfPresent() {
-        String databaseUrl = firstPresent(
-                System.getenv("SPRING_DATASOURCE_URL"),
-                System.getenv("DATABASE_URL"),
-                System.getenv("POSTGRES_URL")
-        );
+        String databaseUrl = rawUrl();
         if (!hasText(databaseUrl)) {
             return;
         }
 
-        if (databaseUrl.startsWith("jdbc:postgresql://")) {
-            System.setProperty("spring.datasource.url", databaseUrl);
+        DatabaseConnection connection = parse(databaseUrl);
+        if (connection == null) {
             return;
+        }
+
+        System.setProperty("spring.datasource.url", connection.jdbcUrl());
+        if (hasText(connection.username())) {
+            System.setProperty("spring.datasource.username", connection.username());
+        }
+        if (hasText(connection.password())) {
+            System.setProperty("spring.datasource.password", connection.password());
+        }
+    }
+
+    public static DatabaseConnection connectionFromEnvironment() {
+        String databaseUrl = rawUrl();
+        return hasText(databaseUrl) ? parse(databaseUrl) : null;
+    }
+
+    private static DatabaseConnection parse(String databaseUrl) {
+        if (databaseUrl.startsWith("jdbc:postgresql://")) {
+            return new DatabaseConnection(
+                    databaseUrl,
+                    System.getenv("SPRING_DATASOURCE_USERNAME"),
+                    System.getenv("SPRING_DATASOURCE_PASSWORD")
+            );
         }
 
         URI uri = URI.create(databaseUrl);
         String scheme = uri.getScheme();
         if (!"postgres".equals(scheme) && !"postgresql".equals(scheme)) {
-            return;
+            return null;
         }
 
         String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + resolvePort(uri) + uri.getPath();
@@ -35,16 +54,26 @@ public final class RenderDatabaseUrl {
             jdbcUrl += "?" + uri.getQuery();
         }
 
-        System.setProperty("spring.datasource.url", jdbcUrl);
-
+        String username = null;
+        String password = null;
         String userInfo = uri.getRawUserInfo();
         if (hasText(userInfo)) {
             String[] credentials = userInfo.split(":", 2);
-            System.setProperty("spring.datasource.username", decode(credentials[0]));
+            username = decode(credentials[0]);
             if (credentials.length > 1) {
-                System.setProperty("spring.datasource.password", decode(credentials[1]));
+                password = decode(credentials[1]);
             }
         }
+
+        return new DatabaseConnection(jdbcUrl, username, password);
+    }
+
+    private static String rawUrl() {
+        return firstPresent(
+                System.getenv("SPRING_DATASOURCE_URL"),
+                System.getenv("DATABASE_URL"),
+                System.getenv("POSTGRES_URL")
+        );
     }
 
     private static int resolvePort(URI uri) {
@@ -67,5 +96,8 @@ public final class RenderDatabaseUrl {
 
     private static String decode(String value) {
         return URLDecoder.decode(value, StandardCharsets.UTF_8);
+    }
+
+    public record DatabaseConnection(String jdbcUrl, String username, String password) {
     }
 }
