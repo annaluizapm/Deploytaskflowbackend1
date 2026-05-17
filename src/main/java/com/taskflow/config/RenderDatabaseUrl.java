@@ -34,6 +34,23 @@ public final class RenderDatabaseUrl {
         return hasText(databaseUrl) ? parse(databaseUrl) : null;
     }
 
+    public static DatabaseConnection connectionFromUrl(String databaseUrl, String username, String password) {
+        if (!hasText(databaseUrl)) {
+            return null;
+        }
+
+        DatabaseConnection connection = parse(databaseUrl);
+        if (connection == null) {
+            return null;
+        }
+
+        return new DatabaseConnection(
+                connection.jdbcUrl(),
+                hasText(connection.username()) ? connection.username() : username,
+                hasText(connection.password()) ? connection.password() : password
+        );
+    }
+
     private static DatabaseConnection parse(String databaseUrl) {
         if (databaseUrl.startsWith("jdbc:postgresql://")) {
             return new DatabaseConnection(

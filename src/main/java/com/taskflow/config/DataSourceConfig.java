@@ -1,10 +1,11 @@
 package com.taskflow.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 
@@ -13,13 +14,13 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    @ConditionalOnExpression(
-            "T(java.lang.System).getenv('SPRING_DATASOURCE_URL') != null "
-                    + "|| T(java.lang.System).getenv('DATABASE_URL') != null "
-                    + "|| T(java.lang.System).getenv('POSTGRES_URL') != null"
-    )
-    public DataSource renderDataSource() {
-        RenderDatabaseUrl.DatabaseConnection connection = RenderDatabaseUrl.connectionFromEnvironment();
+    @Conditional(PostgresDataSourceCondition.class)
+    public DataSource renderDataSource(Environment environment) {
+        RenderDatabaseUrl.DatabaseConnection connection = RenderDatabaseUrl.connectionFromUrl(
+                environment.getProperty("spring.datasource.url"),
+                environment.getProperty("spring.datasource.username"),
+                environment.getProperty("spring.datasource.password")
+        );
         if (connection == null) {
             throw new IllegalStateException("Invalid PostgreSQL database URL");
         }
